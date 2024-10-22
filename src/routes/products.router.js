@@ -9,31 +9,32 @@ const routerP =Router()
 
 routerP.get("/products",async(req,res)=>{
     const products= await manager.getProducts(req.query)
-    res.json({products})
+    res.status(200).json({products})
 })
 
+ 
 
 
 routerP.get("/products/:pid", async (req, res) => {
     const productfind = await manager.getProductbyId(req.params);
-    res.json({ status: "success", productfind });
+    res.status(200).json({error:null, productfind });
   });
 
   routerP.post("/products", async (req, res) => {
     const newproduct = await manager.addProduct(req.body);
-     res.json({ status: "success", newproduct });
+     res.status(200).json({error:null, newproduct });
   });
 
   routerP.put("/products/:pid", async (req, res) => {
     const updatedproduct = await manager.updateProduct(req.params,req.body);
-     res.json({ status: "success", updatedproduct });
+     res.status(200).json({error:null, updatedproduct });
   });
 
   
   routerP.delete("/products/:pid", async (req, res) => {
     const id=parseInt(req.params.pid)
     const deleteproduct = await manager.deleteProduct(id);
-     res.json({ status: "success",deleteproduct });
+     res.status(200).json({error:null,deleteproduct });
   });
 
 
