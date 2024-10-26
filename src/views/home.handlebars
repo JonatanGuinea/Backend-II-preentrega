@@ -10,16 +10,16 @@
                 <div class="card-body">
                     <h5 class="card-title text-white">{{this.title}}</h5>
                     <ul class="list-unstyled">
-                        <li><i class="bi bi-info-circle"></i> ID: {{this.id}}</li>
-                        <li><i class="bi bi-file-text"></i> Description: {{this.description}}</li>
-                        <li><i class="bi bi-currency-dollar"></i> Price: ${{this.price}}</li>
-                        <li><i class="bi bi-grid"></i> Category: {{this.category}}</li>
-                        <li><i class="bi bi-check-circle"></i> Status: {{this.status}}</li>
-                        <li><i class="bi bi-box"></i> Stock: {{this.stock}}</li>
                         <li>
-                            <i class="bi bi-image"></i> Image: <img src="{{this.thumbnail}}" alt="{{this.title}}"
+                            <img src="{{this.thumbnail}}" alt="{{this.title}}"
                                 class="img-fluid mt-2">
                         </li>
+                        {{!-- <li><i class="bi bi-info-circle"></i> ID: {{this.id}}</li> --}}
+                        <li><i class="bi bi-file-text"></i>{{this.description}}</li>
+                        <li><i class="bi bi-currency-dollar"></i> Precio: ${{this.price}}</li>
+                        <li><i class="bi bi-grid"></i> {{this.category}}</li>
+                        {{!-- <li><i class="bi bi-check-circle"></i> Status: {{this.status}}</li> --}}
+                        <li><i class="bi bi-box"></i> Stock: {{this.stock}}</li>
                     </ul>
                 </div>
             </div>

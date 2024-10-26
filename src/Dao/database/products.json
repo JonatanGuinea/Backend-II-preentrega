@@ -1,13 +1,79 @@
 [
   {
-    "id": 2,
-    "title": "asd",
-    "description": "asd",
-    "price": "2323",
+    "id": 1,
+    "title": "Zapatillas Deportivas Nike",
+    "description": "Zapatillas deportivas Nike con excelente amortiguación y diseño moderno.",
+    "price": "129.99",
     "category": "zapatillas",
     "status": true,
-    "thumbnail": "https://i.ibb.co/nngfHbZ/puma.png|",
-    "code": "asdsadasdsa",
-    "stock": "222"
+    "thumbnail": "https://i.ibb.co/dQf5vq8/nike.png",
+    "code": "nike123",
+    "stock": "50"
+  },
+  {
+    "id": 2,
+    "title": "Zapatillas Adidas Running",
+    "description": "Zapatillas Adidas ideales para correr, con tecnología de absorción de impacto.",
+    "price": "139.99",
+    "category": "zapatillas",
+    "status": true,
+    "thumbnail": "https://i.ibb.co/fxQ3kVy/adidas.png",
+    "code": "adidas456",
+    "stock": "70"
+  },
+  {
+    "id": 3,
+    "title": "Zapatillas Puma Casual",
+    "description": "Zapatillas casual Puma, perfectas para el uso diario.",
+    "price": "99.99",
+    "category": "zapatillas",
+    "status": true,
+    "thumbnail": "https://i.ibb.co/nngfHbZ/puma.png",
+    "code": "puma789",
+    "stock": "30"
+  },
+  {
+    "id": 4,
+    "title": "Zapatillas New Balance Classic",
+    "description": "Zapatillas New Balance clásicas y cómodas, en color gris.",
+    "price": "110.00",
+    "category": "zapatillas",
+    "status": true,
+    "thumbnail": "https://i.ibb.co/7QyPjGs/newbalance.png",
+    "code": "nb1024",
+    "stock": "40"
+  },
+  {
+    "id": 5,
+    "title": "Zapatillas Deportivas Nike",
+    "description": "Zapatillas deportivas Nike con excelente amortiguación y diseño moderno.",
+    "price": "129.99",
+    "category": "zapatillas",
+    "status": "true",
+    "thumbnail": "https://i.ibb.co/dQf5vq8/nike.png",
+    "code": "nike1235",
+    "stock": "50"
+  },
+  {
+    "id": 6,
+    "title": "Zapatillas Deportivas Nike",
+    "description": "Zapatillas deportivas Nike con excelente amortiguación y diseño moderno.",
+    "price": "129.99",
+    "category": "zapatillas",
+    "status": "true",
+    "thumbnail": "https://i.ibb.co/dQf5vq8/nike.png",
+    "code": "nike12355",
+    "stock": "50"
+  },
+  {
+    "id": 7,
+    "title": "Zapatillas Deportivas Nike",
+    "description": "Zapatillas deportivas Nike con excelente amortiguación y diseño moderno.",
+    "price": "129.99",
+    "category": "zapatillas",
+    "status": "true",
+    "thumbnail": "https://i.ibb.co/dQf5vq8/nike.png",
+    "code": "nike123557",
+    "stock": "50"
   }
 ]

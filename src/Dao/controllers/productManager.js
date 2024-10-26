@@ -2,8 +2,8 @@ import fs from "fs";
 
 export default class ProductManager {
   constructor(path) {
-    (this.path = path),
-    (this.products = []);
+    this.path = path
+    this.products = []
   }
   
   //READ
@@ -29,6 +29,8 @@ export default class ProductManager {
       throw new Error(error);
     }
   };
+
+  
   getProductsView = async () => {
     try {
      
@@ -68,23 +70,23 @@ export default class ProductManager {
   
   
   
-  //GENERATE ID
-  generateId = async () => {
-    try {
-      if (fs.existsSync(this.path)) {
-        const productlist = await fs.promises.readFile(this.path, "utf-8");
-        const productlistJs = JSON.parse(productlist);
-        const counter = productlistJs.length;
-        if (counter == 0) {
-          return 1;
-        } else {
-          return productlistJs[counter - 1].id + 1;
-        }
-      }
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
+  // //GENERATE ID
+  // generateId = async () => {
+  //   try {
+  //     if (fs.existsSync(this.path)) {
+  //       const productlist = await fs.promises.readFile(this.path, "utf-8");
+  //       const productlistJs = JSON.parse(productlist);
+  //       const counter = productlistJs.length;
+  //       if (counter == 0) {
+  //         return 1;
+  //       } else {
+  //         return productlistJs[counter - 1].id + 1;
+  //       }
+  //     }
+  //   } catch (error) {
+  //     throw new Error(error);
+  //   }
+  // };
 
   //CREATE
   addProduct = async (obj) => {
@@ -101,7 +103,6 @@ export default class ProductManager {
         console.error("EL CODIGO DEL PRODUCTO QUE DESEA AGREGAR ES REPETIDO");
         return;
       } else {
-        const id = await this.generateId();
         const productnew = {
           id,
           title,

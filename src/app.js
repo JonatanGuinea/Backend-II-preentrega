@@ -2,16 +2,18 @@ import express from "express"
 import { __dirname } from "./utils.js"
 import handlebars from "express-handlebars"
 import {Server} from "socket.io"
-
+import { config } from "./utils.js"
 import routerP from "./routes/products.router.js";
 import routerV from "./routes/views.router.js";
 import socketProducts from "./listeners/socketproducts.js";
+import  mongoose  from "mongoose";
 
 
 const app = express()
-const PORT=3000
 
 app.use(express.static(__dirname + "/public"))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 //handlebars
 app.engine("handlebars",handlebars.engine())
 app.set("views", __dirname+"/views")
@@ -21,15 +23,13 @@ app.use("/api",routerP)
 app.use('/', routerV);
 
 
-const httpServer=app.listen(PORT, () => {
-    try {
-        console.log(`Listening to the port ${PORT}\nAcceder a:`);
-        console.log(`\t1). http://localhost:${PORT}/api/products`)
-        console.log(`\t2). http://localhost:${PORT}/api/carts`);
-    }
-    catch (err) {
-        console.log(err);
-    }
+const httpServer=app.listen(config.PORT,async () => {
+
+    await mongoose.connect(config.MONGODB_URI)
+
+    console.log(`Server activo en puerto ${config.PORT}, conectado a bbdd`);
+    
+    
 });
 
 const socketServer = new Server(httpServer)
