@@ -114,6 +114,8 @@ routerP.post("/products", async (req, res) => {
 // PUT - Actualizar un producto por ID
 routerP.put("/products/:pid", async (req, res) => {
   try {
+
+
     const updatedProduct = await productModel.findByIdAndUpdate(
       req.params.pid,
       req.body,
@@ -140,7 +142,8 @@ routerP.delete("/products/:pid", async (req, res) => {
       res.status(404).json({ error: "Producto no encontrado", data: null });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar el producto", data: null });
+    res.status(404).json({ error: "Producto no encontrado", data: null });
+    // res.status(500).json({ error: "Error al eliminar el producto", data: null });
   }
 });
 
