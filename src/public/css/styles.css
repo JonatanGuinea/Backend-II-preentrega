@@ -18,3 +18,8 @@ body {
 .card:hover {
     transform: scale(1.05);
 }
+.img-thumbnail {
+    background-color: transparent; 
+    border: none;
+    
+}

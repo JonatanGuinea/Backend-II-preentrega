@@ -11,39 +11,6 @@
     "stock": "50"
   },
   {
-    "id": 2,
-    "title": "Zapatillas Adidas Running",
-    "description": "Zapatillas Adidas ideales para correr, con tecnología de absorción de impacto.",
-    "price": "139.99",
-    "category": "zapatillas",
-    "status": true,
-    "thumbnail": "https://i.ibb.co/fxQ3kVy/adidas.png",
-    "code": "adidas456",
-    "stock": "70"
-  },
-  {
-    "id": 3,
-    "title": "Zapatillas Puma Casual",
-    "description": "Zapatillas casual Puma, perfectas para el uso diario.",
-    "price": "99.99",
-    "category": "zapatillas",
-    "status": true,
-    "thumbnail": "https://i.ibb.co/nngfHbZ/puma.png",
-    "code": "puma789",
-    "stock": "30"
-  },
-  {
-    "id": 4,
-    "title": "Zapatillas New Balance Classic",
-    "description": "Zapatillas New Balance clásicas y cómodas, en color gris.",
-    "price": "110.00",
-    "category": "zapatillas",
-    "status": true,
-    "thumbnail": "https://i.ibb.co/7QyPjGs/newbalance.png",
-    "code": "nb1024",
-    "stock": "40"
-  },
-  {
     "id": 5,
     "title": "Zapatillas Deportivas Nike",
     "description": "Zapatillas deportivas Nike con excelente amortiguación y diseño moderno.",

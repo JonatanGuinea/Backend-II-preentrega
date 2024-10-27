@@ -17,18 +17,18 @@ function updateProductList(productList) {
         <div class="card-body">
             <h4 class="card-title text-white">${product.title}</h4>
             <p class="card-text">
-            <ul class="card-text">
-            <li>id: ${product.id}</li>
-            <li>description: ${product.description}</li>
-            <li>price: $${product.price}</li>
-            <li>category: ${product.category}</li>
-            <li>status: ${product.status}</li>
-            <li>stock: ${product.stock}</li>
-            thumbnail: <img src="${product.thumbnail}" alt="img" class="img-thumbnail img-fluid">        </ul>
+                <ul class="card-text">
+                    <li>${product.description}</li>
+                    <li>Precio: $${product.price}</li>
+                    <li>Categoria: ${product.category}</li>
+                    <li>Stock: ${product.stock}</li>
+                    <img src="${product.thumbnail}" alt="img" class="img-thumbnail img-fluid"> 
+                </ul>
             </p>
         </div>
         <div class="d-flex justify-content-center mb-4">
-        <button type="button" class="btn btn-danger delete-btn" onclick="deleteProduct(${product.id})">Eliminar</button>
+        <button type="button" class="btn btn-danger delete-btn" onclick="deleteProduct('${product._id}')">Eliminar</button>
+
         </div>
         
     </div>
@@ -72,7 +72,7 @@ function updateProductList(productList) {
   //para eliminar por ID
 document.getElementById("delete-btn").addEventListener("click", function () {
     const deleteidinput = document.getElementById("id-prod");
-    const deleteid = parseInt(deleteidinput.value);
+    const deleteid = deleteidinput.value;
     socketClient.emit("deleteProduct", deleteid);
     deleteidinput.value = "";
   })

@@ -2,12 +2,13 @@ import { Router } from 'express';
 import ProductManager from '../Dao/controllers/productManager.js';
 import { __dirname } from "../utils.js"
 
+
 const pm=new ProductManager(__dirname+'/Dao/database/products.json')
 const routerV = Router()
 
 
 routerV.get("/",async(req,res)=>{
-    const listadeproductos=await pm.getProductsView()
+    const listadeproductos=await pm.getProducts()
     res.render("home",{listadeproductos})
 })
 

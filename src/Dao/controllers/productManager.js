@@ -1,177 +1,72 @@
-import fs from "fs";
+import productModel from "../models/product.model.js";
 
 export default class ProductManager {
-  constructor(path) {
-    this.path = path
-    this.products = []
-  }
-  
-  //READ
+  // GET - Obtener todos los productos con límite opcional
   getProducts = async (info) => {
-
     try {
-      const { limit } = info;
 
-      if (fs.existsSync(this.path)) {
-      
-        const productlist = await fs.promises.readFile(this.path, "utf-8");
-        const productlistJs = JSON.parse(productlist);
-        if (limit) {
-          const limitProducts = productlistJs.slice(0, parseInt(limit));
-          return limitProducts;
-        } else {
-          return productlistJs;
-        }
-      } else {
-        return [];
-      }
+      const products = info
+        ? await productModel.find().limit(parseInt(info)).lean()
+        : await productModel.find().lean();
+      return products;
     } catch (error) {
-      throw new Error(error);
+      throw new Error("Error al obtener productos: " + error.message);
     }
   };
 
-  
+  // GET - Obtener producto por ID
+  getProductbyId = async (id) => {
+    try {
+      const product = await productModel.findById(id).lean();
+      return product || null;
+    } catch (error) {
+      throw new Error("Error al obtener el producto: " + error.message);
+    }
+  };
+
+  // POST - Agregar un producto
+  addProduct = async (obj) => {
+    const { title, description, price, category, status = true, thumbnail, code, stock } = obj;
+    if (!title || !description || !price || !category || !code || stock === undefined) {
+      throw new Error("Todos los campos son obligatorios");
+    }
+    
+    const productExists = await productModel.findOne({ code });
+    if (productExists) throw new Error("El código del producto ya existe");
+
+    const newProduct = new productModel({ title, description, price, category, status, thumbnail, code, stock });
+    return await newProduct.save();
+  };
+
+  // PUT - Actualizar un producto por ID
+  updateProduct = async (id, updates) => {
+    try {
+      const updatedProduct = await productModel.findByIdAndUpdate(id, updates, { new: true, runValidators: true });
+      return updatedProduct || null;
+    } catch (error) {
+      throw new Error("Error al actualizar el producto: " + error.message);
+    }
+  };
+
+  // DELETE - Eliminar un producto por ID
+  deleteProduct = async (id) => {
+    try {
+      const deletedProduct = await productModel.findByIdAndDelete(id);
+      return deletedProduct ? "Producto Eliminado" : null;
+    } catch (error) {
+      throw new Error("Error al eliminar el producto: " + error.message);
+    }
+  };
+
   getProductsView = async () => {
     try {
      
 
-      if (fs.existsSync(this.path)) {
-      
-        const productlist = await fs.promises.readFile(this.path, "utf-8");
-        const productlistJs = JSON.parse(productlist);
-          return productlistJs;
-      } else {
-        return [];
-      }
+        const productlist = await productModel.find().lean();
+          return productlist;
+     
     } catch (error) {
       throw new Error(error);
     }
 };
-  
-
-  getProductbyId = async (id) => {
-    try {
-      const {pid}=id
-      if (fs.existsSync(this.path)) {
-        const allproducts = await this.getProducts({});
-        const found = allproducts.find((element) => element.id === parseInt(pid));
-        if (found) {
-          return found;
-        } else {
-          throw new Error("Producto no existe");
-        }
-      } else {
-        throw new Error("Product file not found");
-      }
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-  
-  
-  
-  // //GENERATE ID
-  // generateId = async () => {
-  //   try {
-  //     if (fs.existsSync(this.path)) {
-  //       const productlist = await fs.promises.readFile(this.path, "utf-8");
-  //       const productlistJs = JSON.parse(productlist);
-  //       const counter = productlistJs.length;
-  //       if (counter == 0) {
-  //         return 1;
-  //       } else {
-  //         return productlistJs[counter - 1].id + 1;
-  //       }
-  //     }
-  //   } catch (error) {
-  //     throw new Error(error);
-  //   }
-  // };
-
-  //CREATE
-  addProduct = async (obj) => {
-    const {title, description, price, thumbnail,category,status=true, code, stock}=obj
-    if (!title || !description || !price || !category || !code ||!status || !stock) {
-      console.error("INGRESE TODOS LOS DATOS DEL PRODUCTO");
-      return;
-    } else {
-      const listadoProductos=await this.getProducts({})
-      const codigorepetido = listadoProductos.find(
-        (elemento) => elemento.code === code
-      );
-      if (codigorepetido) {
-        console.error("EL CODIGO DEL PRODUCTO QUE DESEA AGREGAR ES REPETIDO");
-        return;
-      } else {
-        const productnew = {
-          id,
-          title,
-          description,
-          price,
-          category,
-          status,
-          thumbnail,
-          code,
-          stock,
-        };
-        listadoProductos.push(productnew);
-        await fs.promises.writeFile(this.path,
-          JSON.stringify(listadoProductos, null, 2)
-        );
-      }
-    }
-  };
-
-  //UPDATE
-  updateProduct = async (id,obj) => {
-    const {pid}=id
-    const {title, description, price, category,thumbnail, status,code, stock}=obj
-         if(title===undefined || description===undefined || price===undefined || category===undefined || status===undefined || code===undefined||stock===undefined){
-      console.error("INGRESE TODOS LOS DATOS DEL PRODUCTO PARA SU ACTUALIZACION");
-      return;
-    } else {
-      const listadoProductos = await this.getProducts({});
-      const codigorepetido = listadoProductos.find( (i) => i.code === code);
-      if (codigorepetido) {
-        console.error(
-          "EL CODIGO DEL PRODUCTO QUE DESEA ACTUALIZAR ES REPETIDO"
-        );
-        return;
-      } else {
-        const listadoProductos = await this.getProducts({});
-        const newProductsList = listadoProductos.map((elemento) => {
-          if (elemento.id === parseInt(pid)) {
-                    const updatedProduct = {
-                      ...elemento,
-                      title,
-                      description,
-                      price,
-                      category,
-                      status,
-                      thumbnail,
-                      code,
-                      stock
-                    };
-            return updatedProduct;
-          } else {
-            return elemento;
-          }
-        });
-        await fs.promises.writeFile(this.path,JSON.stringify(newProductsList, null, 2));
-     
-      }
-    }
-  };
-
-  //DELETE
-  deleteProduct = async (id) => {
-    const allproducts = await this.getProducts({});
-    const productswithoutfound = allproducts.filter(
- (elemento) => elemento.id !==  parseInt(id)
-    );
-    await fs.promises.writeFile(this.path,JSON.stringify(productswithoutfound, null, 2)
-    );
-      return "Producto Eliminado"
-
-  };
 }
