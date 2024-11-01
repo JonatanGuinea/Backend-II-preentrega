@@ -23,3 +23,68 @@ body {
     border: none;
     
 }
+
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-family: Arial, sans-serif;
+    margin:  40px 0;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  nav a:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  nav span {
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .usuarios {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.usuarios h1 {
+    font-size: 2em;
+    color: #333;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.usuarios h2 {
+    font-size: 1.5em;
+    color: #555;
+    font-weight: bold;
+    margin-bottom: 5px;
+    padding-left: 10px;
+}
+
+.usuarios .users {
+    font-size: 1.2em;
+    color: #444;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #eef2f3;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

@@ -4,7 +4,7 @@ import handlebars from "express-handlebars"
 import {Server} from "socket.io"
 
 
-import routerP from "./routes/products.router.js";
+// import routerP from "./routes/products.router.js";
 import routerV from "./routes/views.router.js";
 import socketProducts from "./listeners/socketproducts.js";
 import { config } from "./utils.js"
@@ -28,7 +28,7 @@ const httpServer=app.listen(config.PORT,async () => {
     app.set("views", __dirname+"/views")
     app.set("view engine","handlebars")
     //rutas
-    app.use("/api",routerP)
+    // app.use("/api",routerP)
     app.use('/', routerV);
     
     

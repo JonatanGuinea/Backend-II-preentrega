@@ -3,13 +3,35 @@ import productModel from "../models/product.model.js";
 export default class ProductManager {
   // GET - Obtener todos los productos con límite opcional
   getProducts = async (info) => {
-    try {
 
-      const products = info
-        ? await productModel.find().limit(parseInt(info)).lean()
-        : await productModel.find().lean();
-      return products;
-    } catch (error) {
+    const {limit=10, page = 1, sort, query} = info
+
+    const options = {
+      limit: parseInt(limit),
+      page: parseInt(page),
+      sort: sort ? { price: sort === 'asc' ? 1 : -1 } : null,
+      lean:true
+    };
+
+    const filters =query ? { $or: [{ category: query }] } : {}
+
+    try {
+      const result = await productModel.paginate(filters, options);
+      const dataPaginate = {
+        status: 'success',
+        payload: result.docs,
+        totalPages: result.totalPages,
+        prevPage: result.hasPrevPage ? result.page - 1 : null,
+        nextPage: result.hasNextPage ? result.page + 1 : null,
+        page: result.page,
+        hasPrevPage: result.hasPrevPage,
+        hasNextPage: result.hasNextPage,
+        prevLink: result.hasPrevPage ? `/?limit=${limit}&page=${result.page - 1}` : null,
+        nextLink: result.hasNextPage ? `/?limit=${limit}&page=${result.page + 1}` : null
+      }
+    return dataPaginate
+    }
+      catch (error) {
       throw new Error("Error al obtener productos: " + error.message);
     }
   };

@@ -1,10 +1,10 @@
-import mongoose  from 'mongoose';
+import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
 mongoose.pluralize(null);
 
 const collection = 'products';
 
 const schema = new mongoose.Schema({
- 
   title: {
     type: String,
     required: true,
@@ -44,6 +44,9 @@ const schema = new mongoose.Schema({
     min: 0,
   }
 });
+
+// Aplica el plugin de paginación antes de crear el modelo
+schema.plugin(mongoosePaginate);
 
 const model = mongoose.model(collection, schema);
 
