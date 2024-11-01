@@ -39,4 +39,3 @@ const socketServer = new Server(httpServer)
 
 socketProducts(socketServer)
 
-//probando push 2
