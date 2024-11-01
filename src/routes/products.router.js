@@ -19,7 +19,7 @@ routerP.get("/", async (req, res) => {
 });
 
 // GET - Obtener producto por ID
-routerP.get("//:pid", async (req, res) => {
+routerP.get("/:pid", async (req, res) => {
   try {
     const product = await manager.getProductbyId(req.params.pid);
     if (product) {
@@ -43,7 +43,7 @@ routerP.post("/", async (req, res) => {
 });
 
 // PUT - Actualizar producto por ID
-routerP.put("//:pid", async (req, res) => {
+routerP.put("/:pid", async (req, res) => {
   try {
     const updatedProduct = await manager.updateProduct(req.params.pid, req.body);
     if (updatedProduct) {
@@ -57,7 +57,7 @@ routerP.put("//:pid", async (req, res) => {
 });
 
 // DELETE - Eliminar producto por ID
-routerP.delete("//:pid", async (req, res) => {
+routerP.delete("/:pid", async (req, res) => {
   try {
     const result = await manager.deleteProduct(req.params.pid);
     if (result) {

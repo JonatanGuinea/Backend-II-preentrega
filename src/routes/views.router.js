@@ -13,11 +13,12 @@ const routerV = Router()
 
 routerV.get("/",async(req,res)=>{
     const listadeproductos=await pm.getProducts(req.query)
-    res.sendStatus(200).render("home",{listadeproductos})
+    res.status(200).render("home",{listadeproductos})
 
 })
 
 routerV.get("/realtimeproducts",(req,res)=>{
+    
 res.status(200).render("realtimeproducts")
 })
 
