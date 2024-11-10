@@ -9,8 +9,8 @@ const schema = new mongoose.Schema({
     first_name: { type: String, required: true },
     last_name: { type: String, required: true, index: true },
     email: { type: String, required: true, unique: true },
-    gender: { type: String },
-    password: { type: String, required: true }
+    gender: { type: String }
+    // password: { type: String, required: true }
 });
 
 const model = mongoose.model(collection, schema);

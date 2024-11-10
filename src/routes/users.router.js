@@ -12,23 +12,23 @@ const auth = (req, res, next) => {
     next();
 }
 
-router.get('/', async (req, res) => {
-    const users = await um.get()
-    res.status(200).render('users',{users});
+router.get('/:uid?', async (req, res) => {
+    const users = await um.get(req.params.uid)
+    res.status(200).json({error : null, data: users})
 })
 
 // router.post('/', auth, uploader.array('thumbnail', 3), async (req, res) => { // gestión de múltiples archivos = req.files
-router.post('/', auth, uploader.single('thumbnail'), async (req, res) => { // gestión de archivo único = req.file
-    const { firstName, lastName, email } = req.body;
+router.post('/', auth, async (req, res) => { // gestión de archivo único = req.file
+    const { first_name, last_name, email } = req.body;
 
-    if (firstName != '' && lastName != '' && email != '') {
-        const newUser = { firstName: firstName, lastName: lastName, email: email };
+    if (first_name != '' && last_name != '' && email != '') {
+        const newUser = { first_name: first_name, last_name: last_name, email: email };
         const process = await um.add(newUser);
 
         // Verificar resultado de process
 
-        const socketServer = req.app.get('socketServer');
-        socketServer.emit('new_user', newUser);
+        // const socketServer = req.app.get('socketServer');
+        // socketServer.emit('new_user', newUser);
         
         res.status(200).send({ error: null, data: process, file: req.file });
     } else {
@@ -38,9 +38,9 @@ router.post('/', auth, uploader.single('thumbnail'), async (req, res) => { // ge
 
 router.put('/:id', auth, async (req, res) => {
     const { id } = req.params;
-    const { firstName, lastName, email } = req.body;
+    const { first_name, last_name, email } = req.body;
     const filter = { _id: id };
-    const updated = { firstName: firstName, lastName: lastName, email: email };
+    const updated = { first_name: first_name, last_name: last_name, email: email };
     const options = { new: true };
 
     const process = await um.update(filter, updated, options);

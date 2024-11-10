@@ -1,27 +1,43 @@
 
 
 import userModel from '../models/user.model.js';
+import CartController from '../controllers/cartsManager.js'
+
+const cm = new CartController()
 
 
 
 class UserController {
     constructor() {}
 
-    get = async () => {
+    get = async (info) => {
         try {
-            // return await userModel.find().lean();
-            // const regex = /^C/i;
+            const userid = await userModel.findById(info).lean()
+
+            
+            if(userid){
+                return userid
+            }
             return await userModel.find().lean();
-            // return await userModel.find({ lastName: { $regex: regex }}).explain('executionStats');
+            
         } catch (err) {
+            
+            
             return err.message;
         }
     }
 
     add = async (data) => {
         try {
-            return await userModel.create(data);
+            const createdUser = await userModel.create(data)
+            
+            const infoToCart = {userId : createdUser._id , products:[]}
+
+            cm.add(infoToCart)
+            
+            return createdUser
         } catch (err) {
+            
             return err.message;
         }
     }

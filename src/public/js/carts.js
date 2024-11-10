@@ -1,41 +1,42 @@
-<div class="container">
-    <h1>Carritos de Compras</h1>
+// // cart.js
 
-    {{#if carts}}
-        {{#each carts}}
-            <h2>Carrito ID: <span class="cart-id">{{_id}}</span></h2>
-            <h2><span class="cart-id">{{userId.first_name}} {{userId.last_name}}</span></h2>
-            <h3>Productos en el carrito:</h3>
-            
-            {{#if products.length}}
-                <ul>
-                    {{#each products}}
-                        <li class="product-item">
-                            <div>
-                                <strong>Producto:</strong> {{this.products}}<br>
-                                <strong>Descripción:</strong> {{this.product.description}}<br>
-                                <strong>Precio:</strong> ${{this.product.price}}<br>
-                                <strong>Cantidad:</strong> {{this.quantity}}<br>
-                                <strong>Total:</strong> ${{multiply this.quantity this.product.price}}
-                            </div>
-                            <button data-product-id="{{this.product._id}}" class="remove-product">Eliminar</button>
-                        </li>
-                    {{/each}}
-                </ul>
-                <h2>Total : $</h2>
-                <button class="clear-cart">Eliminar todos los productos</button>
-            {{else}}
-                <p class="empty-cart-message">No hay productos en el carrito.</p>
-            {{/if}}
-        {{/each}}
-    {{else}}
-        <p class="empty-cart-message">No se encontró el carrito.</p>
-    {{/if}}
-</div>
+// // Evento para eliminar un producto específico del carrito
+// document.querySelectorAll('.remove-product').forEach(button => {
+//     button.addEventListener('click', async () => {
+//         const productId = button.getAttribute('data-product-id');
+//         const cartId = 'ID_DEL_CARRITO';  // reemplaza con el ID actual del carrito
 
+//         try {
+//             const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+//                 method: 'DELETE'
+//             });
+//             const result = await response.json();
+//             if (result.status === 'success') {
+//                 location.reload();  // recarga la página para actualizar la lista de productos
+//             }
+//         } catch (error) {
+//             console.error('Error al eliminar el producto:', error);
+//         }
+//     });
+// });
 
+// // Evento para eliminar todos los productos del carrito
+// document.querySelector('.clear-cart').addEventListener('click', async () => {
+//     const cartId = 'ID_DEL_CARRITO';  // reemplaza con el ID actual del carrito
 
-<script >
+//     try {
+//         const response = await fetch(`/api/carts/${cartId}`, {
+//             method: 'DELETE'
+//         });
+//         const result = await response.json();
+//         if (result.status === 'success') {
+//             location.reload();
+//         }
+//     } catch (error) {
+//         console.error('Error al vaciar el carrito:', error);
+//     }
+// });
+
 document.addEventListener("DOMContentLoaded", function () {
     // Eliminar producto específico
     document.querySelectorAll(".remove-product").forEach(button => {
@@ -89,4 +90,3 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
-</script>

@@ -1,28 +1,52 @@
-import express  from "express";
-import Cart from '../Dao/models/cart.model.js';
+
+
+import { Router } from "express";
 import CartController from '../Dao/controllers/cartsManager.js' 
 
-const router = express.Router();
+const router = Router();
 
 const cm = new CartController()
 
+
+
+//obetener carrito por id de usuario
 router.get('/', async (req, res) => {
-    const cart = await cm.get()
-    res.status(200).render('carts', { cart });
+    const data = await cm.get()
+    res.status(200).json({data : data});
+})
+router.get('/:id', async (req, res) => {
+    const data = await cm.getOne(req.params.id)
+    // res.status(200).render('carts', { carts })
+    res.status(200).json({data : data});
 })
 
-// Eliminar un producto específico del carrito
+//Agregar nuevo carrito
+router.post('/:uid?', async (req, res) => {
+    const newCart = await cm.add(req.params.uid)
+    res.status(200).json({data : newCart});
+})
+
+
+
 router.delete('/:cid/products/:pid', async (req, res) => {
     const { cid, pid } = req.params;
-    await Cart.findByIdAndUpdate(cid, { $pull: { products: { product: pid } } });
-    res.json({ status: 'success', message: 'Producto eliminado del carrito' });
+    
+    try {
+        const updatedCart = await cm.delete(cid, pid); // Llamada a la función delete
+        if (!updatedCart) {
+            return res.status(404).json({ status: 'error', message: 'Carrito o producto no encontrado' });
+        }
+        res.json({ status: 'success', message: 'Producto eliminado del carrito', cart: updatedCart });
+    } catch (err) {
+        res.status(500).json({ status: 'error', message: err.message });
+    }
 });
 
 // Actualizar el carrito con un arreglo de productos
 router.put('/:cid', async (req, res) => {
     const { cid } = req.params;
     const products = req.body.products;
-    const cart = await Cart.findByIdAndUpdate(cid, { products }, { new: true });
+    const cart = await cm.update(cid, { products }, { new: true });
     res.json(cart);
 });
 
@@ -30,7 +54,7 @@ router.put('/:cid', async (req, res) => {
 router.put('/:cid/products/:pid', async (req, res) => {
     const { cid, pid } = req.params;
     const { quantity } = req.body;
-    const cart = await Cart.findOneAndUpdate(
+    const cart = await cm.update(
         { _id: cid, 'products.product': pid },
         { $set: { 'products.$.quantity': quantity } },
         { new: true }
@@ -41,15 +65,31 @@ router.put('/:cid/products/:pid', async (req, res) => {
 // Eliminar todos los productos del carrito
 router.delete('/:cid', async (req, res) => {
     const { cid } = req.params;
-    await Cart.findByIdAndUpdate(cid, { products: [] });
+    await cm.delete(cid, { products: [] });
     res.json({ status: 'success', message: 'Todos los productos eliminados del carrito' });
 });
 
 // Obtener el carrito completo con productos poblados
 router.get('/:cid', async (req, res) => {
     const { cid } = req.params;
-    const cart = await Cart.findById(cid).populate('products.product');
+    const cart = await cm.get(cid).populate('products.product');
     res.json(cart);
 });
 
+router.post('/:cid/products/:pid', async (req, res) => {
+    const { cid, pid } = req.params;
+    const { qty } = req.body;  // Cantidad de producto pasada en el cuerpo de la solicitud
+
+    try {
+        const cart = await cm.addProductToCart(cid, pid, qty || 1); 
+        res.json({ status: 'success', cart });
+    } catch (error) {
+        res.status(505).json({ status: 'error', message: error.message });
+    }
+});
+
+router.post('/:uid', async(req, res)=>{
+    const createCart = await cm.add(req.params.uid)
+    res.status(200).json({error:null, data: createCart })
+})
 export default router
