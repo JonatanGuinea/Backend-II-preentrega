@@ -14,8 +14,8 @@ router.get('/', async (req, res) => {
     const data = await cm.get()
     res.status(200).json({data : data});
 })
-router.get('/:id', async (req, res) => {
-    const data = await cm.getOne(req.params.id)
+router.get('/:cid', async (req, res) => {
+    const data = await cm.getOneByIdCart(req.params.cid)
     // res.status(200).render('carts', { carts })
     res.status(200).json({data : data});
 })
@@ -32,7 +32,7 @@ router.delete('/:cid/products/:pid', async (req, res) => {
     const { cid, pid } = req.params;
     
     try {
-        const updatedCart = await cm.delete(cid, pid); // Llamada a la función delete
+        const updatedCart = await cm.deleteProduct(cid, pid); // Llamada a la función delete
         if (!updatedCart) {
             return res.status(404).json({ status: 'error', message: 'Carrito o producto no encontrado' });
         }
@@ -64,15 +64,15 @@ router.put('/:cid/products/:pid', async (req, res) => {
 
 // Eliminar todos los productos del carrito
 router.delete('/:cid', async (req, res) => {
-    const { cid } = req.params;
-    await cm.delete(cid, { products: [] });
+    const cart = req.params.cid;
+    await cm.delete(cart);
     res.json({ status: 'success', message: 'Todos los productos eliminados del carrito' });
 });
 
 // Obtener el carrito completo con productos poblados
 router.get('/:cid', async (req, res) => {
     const { cid } = req.params;
-    const cart = await cm.get(cid).populate('products.product');
+    const cart = await cm.getOneByIdCart(cid).populate('products.product');
     res.json(cart);
 });
 

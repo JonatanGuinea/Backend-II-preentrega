@@ -6,26 +6,6 @@ import userModel from '../models/user.model.js';
 class CartController {
     constructor() {}
 
-    // get = async () => {
-    //     try {
-            
-    //         // return await cartModel.find()
-    //         // return await cartModel.find().populate({path:'userId',model: userModel, select:'first_name last_name '}).lean()
-    //         return await cartModel.find()
-    //     } catch (err) {
-    //         return err.message;
-    //     }
-    // }
-
-    // getOne = async (id) => {
-    //     try {
-    //         return await cartModel.find({userId:{_id:id}})
-            
-    //     } catch (err) {
-    //         return  'No existe el carrito: ' + err.message ;
-    //     }
-    // }
-
     get = async () => {
         try {
             return await cartModel.find().populate({
@@ -53,6 +33,21 @@ class CartController {
             return 'No existe el carrito: ' + err.message;
         }
     }
+    getOneByIdCart = async (id) => {
+        try {
+            return await cartModel.findOne({ _id: id })
+                .populate({
+                    path: 'products.product'
+                })
+                .populate({
+                    path: 'userId'
+                })
+                .lean();
+        } catch (err) {
+            return 'No existe el carrito: ' + err.message;
+        }
+    };
+    
 
     add = async (data) => {
         try {
@@ -74,7 +69,15 @@ class CartController {
         }
     }
 
-    delete = async (cid, pid) => {
+    delete = async (cart)=> {
+    try {
+        await cartModel.updateOne({_id:cart}, {products:[]})
+    }catch(error){
+        return err.message
+    }
+    }
+
+    deleteProduct = async (cid, pid) => {
         try {
             return await cartModel.findOneAndUpdate(
                 { _id: cid }, // Buscar el carrito por ID

@@ -18,7 +18,12 @@ routerV.get("/",async(req,res)=>{
     res.status(200).render("home",{listadeproductos})
     
 })
-
+routerV.get('/carts/:cid', async (req, res) => {
+    const cart = await cm.getOneByIdCart(req.params.cid);
+    res.status(200).render('onecart', { cart });
+    console.log(cart);
+    
+    });
 routerV.get('/carts', async (req, res) => {
     const carts = await cm.get()
     res.status(200).render('carts', { carts: carts })

@@ -90,7 +90,7 @@ nav span {
 
 /* Estilos generales para el contenedor del carrito */
 .container {
-    max-width: 800px; /* Ancho máximo del contenedor */
+    max-width: 900px; /* Ancho máximo del contenedor */
     margin: 0 auto; /* Centrar el contenedor en la página */
     padding: 20px; /* Espaciado interno */
     border: 1px solid #ddd; /* Borde gris claro */
@@ -306,3 +306,5 @@ ul {
     margin: 20px 0;
     font-size: 1.1em;
 }
+
+

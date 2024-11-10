@@ -4,6 +4,7 @@ import handlebars from "express-handlebars"
 import {Server} from "socket.io"
 
 
+
 import routerP from "./routes/products.router.js";
 import routerC from "./routes/carts.router.js";
 import routerU from "./routes/users.router.js";
@@ -23,7 +24,7 @@ const httpServer=app.listen(config.PORT,async () => {
 
     await mongoose.connect(config.MONGODB_URI)
 
-    
+
     app.use(express.static(__dirname + "/public"))
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
