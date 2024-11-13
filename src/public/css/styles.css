@@ -307,4 +307,8 @@ ul {
     font-size: 1.1em;
 }
 
-
+button {
+    border: none;
+    padding: 0;
+    margin: 10px
+}

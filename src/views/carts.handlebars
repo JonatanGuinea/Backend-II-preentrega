@@ -26,6 +26,7 @@
             {{else}}
                 <p class="empty-cart-message">No hay productos en el carrito.</p>
             {{/if}}
+            <button class="btn-danger delete-cart" >Eliminar Carrito</button>
         {{/each}}
     {{else}}
         <p class="empty-cart-message">No se encontró el carrito.</p>
@@ -87,5 +88,33 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
+    // Eliminar producto específico
+    document.querySelectorAll(".delete-cart").forEach(button => {
+        button.addEventListener("click", async function () {
+            const cartId = document.querySelector(".cart-id").textContent.trim(); // Obtener el ID del carrito
+
+            try {
+                // Llamada al backend para eliminar el producto del carrito
+                const response = await fetch(`/api/carts/delete/${cartId}/`, {
+                    method: "DELETE"
+                });
+
+                if (response.ok) {
+                    // Eliminar el producto de la interfaz si la solicitud fue exitosa
+                    this.closest(".delete-cart").remove();
+                    alert("Carrito eliminado correctamente.");
+                } else {
+                    alert("Error al eliminar el carrito");
+                }
+            } catch (error) {
+                console.error("Error en la solicitud:", error);
+                alert("Hubo un problema al eliminar el carrito.");
+            }
+        });
+    });
 });
+
+
+
 </script>

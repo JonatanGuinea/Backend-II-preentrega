@@ -21,7 +21,6 @@ routerV.get("/",async(req,res)=>{
 routerV.get('/carts/:cid', async (req, res) => {
     const cart = await cm.getOneByIdCart(req.params.cid);
     res.status(200).render('onecart', { cart });
-    console.log(cart);
     
     });
 routerV.get('/carts', async (req, res) => {
@@ -34,6 +33,8 @@ routerV.get('/users', async (req, res) => {
     const users = await um.get()
     res.status(200).render('users',{users});
 })
+
+
 routerV.get("/realtimeproducts",(req,res)=>{
     
 res.status(200).render("realtimeproducts")

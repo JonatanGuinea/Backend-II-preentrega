@@ -1,4 +1,4 @@
-<div class="container-one">
+<div class="container">
     <h1>Carritode:  {{cart.userId.first_name}} {{cart.userId.last_name}}</h1>
 
     <h2>Carrito ID: <span class="cart-id">{{cart._id}}</span></h2>
@@ -8,7 +8,7 @@
     {{#if cart.products.length}}
         <ul>
             {{#each cart.products}}
-                <li class="product-item">
+                <li>
                     <div>
                         <strong>Producto:</strong> {{this.product.title}}<br>
                         <strong>Descripción:</strong> {{this.product.description}}<br>
@@ -83,4 +83,5 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
 </script>

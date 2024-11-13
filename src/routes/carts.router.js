@@ -68,6 +68,11 @@ router.delete('/:cid', async (req, res) => {
     await cm.delete(cart);
     res.json({ status: 'success', message: 'Todos los productos eliminados del carrito' });
 });
+router.delete('/delete/:cid', async (req, res) => {
+    const cart = req.params.cid;
+    await cm.deleteCart(cart);
+    res.json({ status: 'success', message: 'Carrito eliminado' });
+});
 
 // Obtener el carrito completo con productos poblados
 router.get('/:cid', async (req, res) => {
@@ -84,7 +89,7 @@ router.post('/:cid/products/:pid', async (req, res) => {
         const cart = await cm.addProductToCart(cid, pid, qty || 1); 
         res.json({ status: 'success', cart });
     } catch (error) {
-        res.status(505).json({ status: 'error', message: error.message });
+        res.status(505).json({ status: 'error', message: 'Carrito inexistente' });
     }
 });
 

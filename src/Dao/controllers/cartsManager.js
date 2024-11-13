@@ -53,7 +53,7 @@ class CartController {
         try {
             
             const createCart = await cartModel.create({userId:data, products:[]})
-            
+            return createCart
         } catch (err) {
             return err.message;
         }
@@ -72,6 +72,13 @@ class CartController {
     delete = async (cart)=> {
     try {
         await cartModel.updateOne({_id:cart}, {products:[]})
+    }catch(error){
+        return err.message
+    }
+    }
+    deleteCart = async (cart)=> {
+    try {
+        await cartModel.deleteOne({_id:cart})
     }catch(error){
         return err.message
     }

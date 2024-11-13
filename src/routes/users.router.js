@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import { uploader } from '../uploader.js';
 import UserController from '../Dao/controllers/usersManager.js';
 
 
@@ -18,17 +17,12 @@ router.get('/:uid?', async (req, res) => {
 })
 
 // router.post('/', auth, uploader.array('thumbnail', 3), async (req, res) => { // gestión de múltiples archivos = req.files
-router.post('/', auth, async (req, res) => { // gestión de archivo único = req.file
+router.post('/', async (req, res) => { // gestión de archivo único = req.file
     const { first_name, last_name, email } = req.body;
 
     if (first_name != '' && last_name != '' && email != '') {
         const newUser = { first_name: first_name, last_name: last_name, email: email };
         const process = await um.add(newUser);
-
-        // Verificar resultado de process
-
-        // const socketServer = req.app.get('socketServer');
-        // socketServer.emit('new_user', newUser);
         
         res.status(200).send({ error: null, data: process, file: req.file });
     } else {

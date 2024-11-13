@@ -31,11 +31,10 @@ class UserController {
         try {
             const createdUser = await userModel.create(data)
             
-            const infoToCart = {userId : createdUser._id , products:[]}
+            const infoToCart = await cm.add(createdUser._id)
 
-            cm.add(infoToCart)
+            return infoToCart
             
-            return createdUser
         } catch (err) {
             
             return err.message;

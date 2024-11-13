@@ -1,4 +1,46 @@
+
+
 <div class = 'usuarios'>
+    <form class="row g-3 mx-4" id="formUser" method="POST"  enctype="multipart/form-data">
+    <h2 class="mb-4">Registrate</h2>
+    <h3 class="mb-4">Completa los datos:</h3>
+
+    <!-- Nombre del Producto -->
+    <div class="col-md-6">
+        <label for="first_name" class="form-label">Nombre</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-box"></i></span>
+            <input class="form-control" type="text" name="first_name" id="first_name" placeholder="Ej. Jonatan" required>
+        </div>
+    </div> 
+
+    <!-- Descripción -->
+    <div class="col-md-6">
+        <label for="last_name" class="form-label">Apellido</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-file-text"></i></span>
+            <input class="form-control" type="text" name="last_name" id="last_name" placeholder="Ej. Guinea" required>
+        </div>
+    </div>
+
+    <!-- Stock -->
+    <div class="col-md-6">
+        <label for="email" class="form-label">e-mail</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-box"></i></span>
+            <input class="form-control" type="email" name="email" id="email" placeholder="Ej. jonatan.guinea@hotmail.com" required>
+        </div>
+    </div>
+
+   
+    <!-- Botón Registrar -->
+    <div class="col-12 mt-4">
+        <button class="btn btn-primary" type="submit" id="register-btn">Registrar </button>
+    </div>
+
+    
+</form>
+
     <h1><b>Users</b></h1>
     <h2><b>Perfil de usuario</b></h2>
     {{#each users}}
@@ -7,3 +49,5 @@
     {{/each}}
 </div>
 
+
+<script src="/js/user.js"></script>
