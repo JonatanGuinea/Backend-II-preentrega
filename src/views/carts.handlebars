@@ -1,9 +1,11 @@
+<button ><a class="btn-warning" href="/">INICIO</a></button>
+
 <div class="container">
     <h1>Carritos de Compras</h1>
 
     {{#if carts}}
         {{#each carts}}
-            <h2>Carrito ID: <span class="cart-id">{{_id}}</span></h2>
+            <h2>Carrito ID: <span class="cart-id">{{_id}}</span></h2> <button><a class="btn-warning" href="/carts/{{_id}}">VER CARRITO</a></button>
             <h2><span class="cart-id">{{userId.first_name}} {{userId.last_name}}</span></h2>
             <h3>Productos en el carrito:</h3>
             
