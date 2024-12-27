@@ -12,5 +12,7 @@ export const config = {
       
       USERS_COLLECTION: 'users',
       CARTS_COLLECTION: 'carts',
-      PRODUCTS_COLLECTION: 'products'
+      PRODUCTS_COLLECTION: 'products',
+
+      SECRET : 'secretcode'
 } 

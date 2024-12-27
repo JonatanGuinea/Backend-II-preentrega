@@ -11,6 +11,8 @@ const auth = (req, res, next) => {
     next();
 }
 
+
+
 router.get('/:uid?', async (req, res) => {
     const users = await um.get(req.params.uid)
     res.status(200).json({error : null, data: users})
@@ -70,14 +72,29 @@ router.post('/login', async (req, res) => {
 
         const verify = await um.authenticate(email, password);
 
-        if (verify === 'Usuario no encontrado' || verify === 'Contraseña incorrecta') {
+        if (verify === 'Usuario no encontrado') {
             return res.status(404).send({ error: verify, data: null });
         }
-
-        res.status(200).send({ error: null, data: verify });
+        
+        req.session.userData = {username : email, admin :true}
+        req.flash('success', 'Usuario iniciado sesión correctamente');
+        res.redirect('/')
     } catch (err) {
         res.status(500).send({ error: 'Error interno del servidor', data: err.message });
     }
 });
+
+
+router.post('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            console.error("Error al destruir la sesión:", err);
+            return res.status(500).send({ error: "Error al cerrar sesión", data: [] });
+        }
+        res.status(200).send({ error: null, data: "Sesión cerrada" });
+    });
+});
+
+
 
 export default router;

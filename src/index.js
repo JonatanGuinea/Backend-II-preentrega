@@ -2,6 +2,8 @@ import express from "express"
 import  mongoose  from "mongoose";
 import handlebars from "express-handlebars"
 import {Server} from "socket.io"
+import session from "express-session";
+import flash from "connect-flash"
 
 
 
@@ -29,7 +31,17 @@ const httpServer=app.listen(config.PORT,async () => {
     app.use(express.static(__dirname + "/public"))
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
-    //handlebars
+
+    app.use(session({
+        secret:config.SECRET,
+        resave:true,
+        saveUninitialized:true
+
+    }))
+    
+    app.use(flash());
+
+
     app.engine("handlebars",handlebars.engine(
         {helpers: {
             multiply: (a, b) => a * b
@@ -38,6 +50,8 @@ const httpServer=app.listen(config.PORT,async () => {
             allowProtoMethodsByDefault: true
         }
     ))
+
+
     app.set("views", __dirname+"/views")
     app.set("view engine","handlebars")
     //rutas

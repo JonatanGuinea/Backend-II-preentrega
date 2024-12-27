@@ -1,0 +1,34 @@
+
+
+
+<div class="usuarios">
+    <h2 class="mb-4">¡Ya estás loggeado!</h2>
+    <button onclick="window.location.href='/'" class="btn-warning">INICIO</button>
+    <button id="btn-logout" class="btn-warning">Cerrar sesión</button>
+</div>
+
+<script>
+    let boton = document.getElementById("btn-logout");
+    boton.addEventListener("click", async () => {
+        try {
+            // Cambiar el método de GET a POST para que coincida con la ruta del servidor
+            const response = await fetch(`api/users/logout`, {
+                method: "POST",
+                credentials: "include"  // Asegúrate de incluir las cookies de sesión
+            });
+
+            if (response.ok) {
+                alert("Sesión cerrada con éxito");
+                window.location.href = "/"; // Redirige al inicio
+            } else {
+                const data = await response.json();
+                alert(`Error: ${data.error}`);
+            }
+        } catch (error) {
+            console.error("Error en la solicitud:", error);
+            alert("Hubo un problema al cerrar sesión.");
+        }
+    });
+</script>
+
+
