@@ -15,16 +15,27 @@ class UserController {
 
     get = async (info) => {
         try {
-            if (info) {
-                const userid = await userModel.findById(info).select('-password').lean();
-                return userid || 'Usuario no encontrado';
+            // Si estás buscando por un email o algún otro campo, usa ese campo en lugar de `_id`
+            const user = await userModel.findOne({ email: info }).lean(); 
+    
+            if (user) {
+                return user;
             }
-            return await userModel.find().select('-password').lean();
+            return user
         } catch (err) {
-            console.error('Error al obtener usuario(s):', err);
+            console.error('Error al obtener usuario(s):', err.message);
             throw new Error('No se pudo recuperar la información.');
         }
-    };
+    }
+    
+
+    getOne = async (data)=>{
+        try {
+            return userModel.findOne(data)
+        } catch (error) {
+            res.status(500).send({error, data:[]})
+        }
+    }
     
     
     authenticate = async (email, password) => {

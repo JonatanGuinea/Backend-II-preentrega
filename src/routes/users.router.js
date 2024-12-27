@@ -7,12 +7,16 @@ import UserController from "../Dao/controllers/usersManager.js"
 
 
 const router = Router();
-// Ya no interactuamos con el modelo en los endpoints, lo hacemos a través del controlador (manager)
+
 const um = new UserController();
 
 const auth = (req, res, next) => {
-    console.log('Ejecuta el middleware de autenticación de usuario');
-    next();
+    if(req.session?.passport) {
+        next();
+
+    }else {
+        res.status(401).send({error:'no autorizado', data:[]})
+    }
 }
 
 
@@ -22,7 +26,7 @@ router.get('/:uid?', async (req, res) => {
     res.status(200).json({error : null, data: users})
 })
 
-// router.post('/', auth, uploader.array('thumbnail', 3), async (req, res) => { // gestión de múltiples archivos = req.files
+
 router.post('/', async (req, res) => { // gestión de archivo único = req.file
     const { first_name, last_name, email, password } = req.body;
 
@@ -90,6 +94,7 @@ router.post('/login', async (req, res) => {
 
 router.post('/pplogin', passport.authenticate('login',{}), async (req, res)=>{
 
+    req.session.userData = req.user;
     req.session.save(err=>{
         if(err) return res.status(500).send({error:'error al almacenar sesión', data:[]})
 
@@ -98,6 +103,16 @@ router.post('/pplogin', passport.authenticate('login',{}), async (req, res)=>{
                 
 }
 )
+
+router.get('/ghlogin', passport.authenticate('ghlogin', { scope: ['user:email'] }), async (req, res) => {});
+router.get('/githubcallback', passport.authenticate('ghlogin', { failureRedirect: '/views/login' }), async (req, res) => {
+    req.session.save(err => {
+        if (err) return res.status(500).send({ error: 'Error al almacenar datos de sesión', data: [] });
+
+        // res.status(200).send({ error: null, data: 'Usuario autenticado, sesión iniciada!' });
+        res.redirect('/views/profile');
+    });
+});
 
 router.post('/logout', (req, res) => {
     req.session.destroy(err => {
@@ -108,6 +123,8 @@ router.post('/logout', (req, res) => {
         res.status(200).send({ error: null, data: "Sesión cerrada" });
     });
 });
+
+
 
 
 

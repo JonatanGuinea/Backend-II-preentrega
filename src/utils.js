@@ -19,5 +19,10 @@ export const config = {
       CARTS_COLLECTION: 'carts',
       PRODUCTS_COLLECTION: 'products',
 
-      SECRET : 'secretcode'
+      SECRET : 'secretcode',
+
+      GITHUB_CLIENT_ID: "Iv23lifxh3zbGdyUZLNJ",
+      GITHUB_APP_ID: "1097625",
+      GITHUB_SECRET: "9ece519e139332aeba3bda7562cadb55b7e457a5",
+      GITHUB_CALLBACK_URL: "http://localhost:3000/api/users/githubcallback"
 } 

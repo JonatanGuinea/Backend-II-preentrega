@@ -37,7 +37,7 @@ const httpServer = app.listen(config.PORT, async () => {
         saveUninitialized: true,
         store: MongoStore.create({
             mongoUrl: config.MONGODB_URI,
-            ttl: 600, // 10 minutos
+            ttl: 60, 
             mongoOptions: {}
         })
     }));
