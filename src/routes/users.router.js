@@ -76,9 +76,9 @@ router.post('/login', async (req, res) => {
             return res.status(404).send({ error: verify, data: null });
         }
         
-        req.session.userData = {username : email, admin :true}
+        req.session.userData = {first_name :verify.first_name  ,last_name :verify.las_name ,email : verify.email, admin :true}
         req.flash('success', 'Usuario iniciado sesión correctamente');
-        res.redirect('/')
+        res.redirect('/');
     } catch (err) {
         res.status(500).send({ error: 'Error interno del servidor', data: err.message });
     }

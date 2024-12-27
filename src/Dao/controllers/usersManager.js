@@ -3,6 +3,9 @@
 import userModel from '../models/user.model.js';
 import CartController from '../controllers/cartsManager.js'
 
+import { createHash, isValidPassword } from '../../utils.js';
+
+
 const cm = new CartController()
 
 
@@ -28,10 +31,13 @@ class UserController {
     }
     authenticate = async (email, password) => {
         try {
-            const filter = { email, password };
-            const findUser = await userModel.findOne(filter); // Aquí está corregido
+            // const filter = { email, password };
+            const filter = { email };
+            const findUser = await userModel.findOne(filter);
+
+            const validPass = isValidPassword(password, findUser.password)
     
-            return findUser ? findUser : 'Usuario no encontrado';
+            return validPass ? findUser : 'Usuario no encontrado';
         } catch (err) {
             return err.message;
         }
@@ -39,6 +45,8 @@ class UserController {
 
     add = async (data) => {
         try {
+
+            data.password = createHash(data.password)
             const createdUser = await userModel.create(data)
             
             const infoToCart = await cm.add(createdUser._id)
