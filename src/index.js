@@ -4,6 +4,8 @@ import handlebars from "express-handlebars"
 import {Server} from "socket.io"
 import session from "express-session";
 import flash from "connect-flash"
+import Filestore from "session-file-store"
+import MongoStore from "connect-mongo"
 
 
 
@@ -21,22 +23,26 @@ import { __dirname } from "./utils.js"
 const app = express()
 
 
-
 const httpServer=app.listen(config.PORT,async () => {
-
+    
     await mongoose.connect(config.MONGODB_URI)
-
-
-
+    
+    
+    
     app.use(express.static(__dirname + "/public"))
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
-
+    
+    // const fileStorage= Filestore(session)
     app.use(session({
         secret:config.SECRET,
         resave:true,
-        saveUninitialized:true
+        saveUninitialized:true,
 
+        // store: new fileStorage({path: "./sessions", ttl:600, mongoOptions:{}})
+        store: MongoStore.create({
+            mongoUrl:config.MONGODB_URI, ttl: 60 ,mongoOptions: {}
+        })
     }))
     
     app.use(flash());
