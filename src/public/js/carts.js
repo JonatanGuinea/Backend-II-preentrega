@@ -1,41 +1,4 @@
-// // cart.js
 
-// // Evento para eliminar un producto específico del carrito
-// document.querySelectorAll('.remove-product').forEach(button => {
-//     button.addEventListener('click', async () => {
-//         const productId = button.getAttribute('data-product-id');
-//         const cartId = 'ID_DEL_CARRITO';  // reemplaza con el ID actual del carrito
-
-//         try {
-//             const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
-//                 method: 'DELETE'
-//             });
-//             const result = await response.json();
-//             if (result.status === 'success') {
-//                 location.reload();  // recarga la página para actualizar la lista de productos
-//             }
-//         } catch (error) {
-//             console.error('Error al eliminar el producto:', error);
-//         }
-//     });
-// });
-
-// // Evento para eliminar todos los productos del carrito
-// document.querySelector('.clear-cart').addEventListener('click', async () => {
-//     const cartId = 'ID_DEL_CARRITO';  // reemplaza con el ID actual del carrito
-
-//     try {
-//         const response = await fetch(`/api/carts/${cartId}`, {
-//             method: 'DELETE'
-//         });
-//         const result = await response.json();
-//         if (result.status === 'success') {
-//             location.reload();
-//         }
-//     } catch (error) {
-//         console.error('Error al vaciar el carrito:', error);
-//     }
-// });
 
 document.addEventListener("DOMContentLoaded", function () {
     // Eliminar producto específico

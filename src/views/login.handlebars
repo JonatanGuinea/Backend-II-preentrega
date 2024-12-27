@@ -1,0 +1,32 @@
+<button ><a class="btn-warning" href="/">INICIO</a></button>
+
+<div class = 'usuarios'>
+    <form class="row g-3 mx-4" action="/api/users/login" id="formUserLogin" method="POST"  enctype="application/json">
+    <h2 class="mb-4">Inicio sesion</h2>
+    <h3 class="mb-4">Completa los datos:</h3>
+
+    <div class="col-md-6">
+        <label for="email" class="form-label">Usuario</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-box"></i></span>
+            <input class="form-control" type="email" name="email" id="email" placeholder="Ej. jonatan.guinea@hotmail.com" required>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <label for="password" class="form-label">Contraseña</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-file-text"></i></span>
+            <input class="form-control" type="password" name="password" id="password" placeholder="Inserta una Clave" required>
+        </div>
+    </div>
+   
+    <!-- Botón Registrar -->
+    <div class="col-12 mt-4">
+        <button class="btn btn-primary" type="submit" id="login-btn">Ingresar </button>
+        <span>Si no estas registrado <a href="./users">registrate</a></span>
+    </div>
+
+
+
+<script src="/js/login.js"></script>

@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let first_name = form.elements.first_name.value;
         let last_name = form.elements.last_name.value;
         let email = form.elements.email.value;
+        let password = form.elements.password.value;
 
         try {
             // Llamada al backend para crear un nuevo usuario
@@ -17,7 +18,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: JSON.stringify({
                     first_name,
                     last_name,
-                    email
+                    email,
+                    password
                 })
             });
 

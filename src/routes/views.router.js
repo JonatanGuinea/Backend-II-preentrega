@@ -13,6 +13,7 @@ const um = new UserManager(__dirname)
 const routerV = Router()
 
 
+
 routerV.get("/",async(req,res)=>{
     const listadeproductos=await pm.getProducts(req.query)
     res.status(200).render("home",{listadeproductos})
@@ -32,6 +33,9 @@ routerV.get('/carts', async (req, res) => {
 routerV.get('/users', async (req, res) => {
     const users = await um.get()
     res.status(200).render('users',{users});
+})
+routerV.get('/login', async (req, res) => {
+    res.status(200).render('login')
 })
 
 

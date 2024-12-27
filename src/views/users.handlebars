@@ -32,21 +32,21 @@
         </div>
     </div>
 
-   
+    <div class="col-md-6">
+        <label for="password" class="form-label">Contraseña</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-file-text"></i></span>
+            <input class="form-control" type="password" name="password" id="password" placeholder="Inserta una Clave" required>
+        </div>
+    </div>
     <!-- Botón Registrar -->
     <div class="col-12 mt-4">
+    <span>Si ya tienes cuenta, <a href="./login">Iniciar sesión</a></span>
         <button class="btn btn-primary" type="submit" id="register-btn">Registrar </button>
     </div>
 
     
 </form>
-
-    <h1><b>Users</b></h1>
-    <h2><b>Perfil de usuario</b></h2>
-    {{#each users}}
-    
-    <h2 class="users">Usuario: {{first_name}}, {{last_name}}</h2>
-    {{/each}}
 </div>
 
 

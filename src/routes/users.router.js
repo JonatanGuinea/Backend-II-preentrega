@@ -18,10 +18,10 @@ router.get('/:uid?', async (req, res) => {
 
 // router.post('/', auth, uploader.array('thumbnail', 3), async (req, res) => { // gestión de múltiples archivos = req.files
 router.post('/', async (req, res) => { // gestión de archivo único = req.file
-    const { first_name, last_name, email } = req.body;
+    const { first_name, last_name, email, password } = req.body;
 
-    if (first_name != '' && last_name != '' && email != '') {
-        const newUser = { first_name: first_name, last_name: last_name, email: email };
+    if (first_name != '' && last_name != '' && email != '' && password !='') {
+        const newUser = { first_name, last_name, email, password };
         const process = await um.add(newUser);
         
         res.status(200).send({ error: null, data: process, file: req.file });
@@ -60,5 +60,24 @@ router.delete('/:id', auth, async (req, res) => {
     }
 });
 
+router.post('/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).send({ error: 'Faltan datos obligatorios', data: null });
+        }
+
+        const verify = await um.authenticate(email, password);
+
+        if (verify === 'Usuario no encontrado' || verify === 'Contraseña incorrecta') {
+            return res.status(404).send({ error: verify, data: null });
+        }
+
+        res.status(200).send({ error: null, data: verify });
+    } catch (err) {
+        res.status(500).send({ error: 'Error interno del servidor', data: err.message });
+    }
+});
 
 export default router;

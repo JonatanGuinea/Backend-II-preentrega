@@ -26,6 +26,16 @@ class UserController {
             return err.message;
         }
     }
+    authenticate = async (email, password) => {
+        try {
+            const filter = { email, password };
+            const findUser = await userModel.findOne(filter); // Aquí está corregido
+    
+            return findUser ? findUser : 'Usuario no encontrado';
+        } catch (err) {
+            return err.message;
+        }
+    };
 
     add = async (data) => {
         try {

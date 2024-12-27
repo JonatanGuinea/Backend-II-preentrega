@@ -91,4 +91,13 @@ export default class ProductManager {
       throw new Error(error);
     }
 };
+
+getProductsAggregate = async()=>{
+
+    const filtered = await productModel.aggregate([
+      {$match : {title: 'Samsung'}},
+      {$group: {_id:'$category'}}
+    ])
+
+}
 }
