@@ -26,6 +26,7 @@ class UserController {
             return err.message;
         }
     }
+    
     authenticate = async (email, password) => {
         try {
             const filter = { email, password };
