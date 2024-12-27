@@ -1,5 +1,9 @@
 import { Router } from 'express';
-import UserController from '../Dao/controllers/usersManager.js';
+import passport from 'passport';
+
+import UserController from "../Dao/controllers/usersManager.js"
+
+
 
 
 const router = Router();
@@ -84,6 +88,16 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.post('/pplogin', passport.authenticate('login',{}), async (req, res)=>{
+
+    req.session.save(err=>{
+        if(err) return res.status(500).send({error:'error al almacenar sesión', data:[]})
+
+        res.redirect('/')
+        })
+                
+}
+)
 
 router.post('/logout', (req, res) => {
     req.session.destroy(err => {

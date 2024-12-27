@@ -15,49 +15,50 @@ class UserController {
 
     get = async (info) => {
         try {
-            const userid = await userModel.findById(info).lean()
-
-            
-            if(userid){
-                return userid
+            if (info) {
+                const userid = await userModel.findById(info).select('-password').lean();
+                return userid || 'Usuario no encontrado';
             }
-            return await userModel.find().lean();
-            
+            return await userModel.find().select('-password').lean();
         } catch (err) {
-            
-            
-            return err.message;
+            console.error('Error al obtener usuario(s):', err);
+            throw new Error('No se pudo recuperar la información.');
         }
-    }
+    };
+    
+    
     authenticate = async (email, password) => {
         try {
-            // const filter = { email, password };
             const filter = { email };
             const findUser = await userModel.findOne(filter);
-
-            const validPass = isValidPassword(password, findUser.password)
     
-            return validPass ? findUser : 'Usuario no encontrado';
+            if (!findUser) {
+                return 'Usuario no encontrado';
+            }
+    
+            const validPass = isValidPassword(password, findUser.password);
+    
+            return validPass ? findUser : 'Contraseña incorrecta';
         } catch (err) {
             return err.message;
         }
     };
+    
 
     add = async (data) => {
         try {
-
-            data.password = createHash(data.password)
-            const createdUser = await userModel.create(data)
-            
-            const infoToCart = await cm.add(createdUser._id)
-
-            return infoToCart
-            
+            data.password = createHash(data.password);
+            const createdUser = await userModel.create(data);
+    
+            const infoToCart = await cm.add(createdUser._id);
+    
+            return infoToCart;
         } catch (err) {
-            
-            return err.message;
+            console.error('Error al agregar usuario:', err);
+            throw new Error('No se pudo crear el usuario.');
         }
-    }
+    };
+    
 
     update = async (filter, updated, options) => {
         try {
