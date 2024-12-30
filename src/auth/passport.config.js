@@ -40,9 +40,7 @@ const initAuthStrategies = () => {
         {
             clientID: config.GITHUB_CLIENT_ID,
             clientSecret: config.GITHUB_CLIENT_SECRET,
-            callbackURL: config.GITHUB_CALLBACK_URL,
-
-            passReqToCallback: true, usernameField: 'email'
+            callbackURL: config.GITHUB_CALLBACK_URL
         },
         async (req, accessToken, refreshToken, profile, done) => {
             try {

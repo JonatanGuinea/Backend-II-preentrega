@@ -31,7 +31,7 @@ class UserController {
 
     getOne = async (data)=>{
         try {
-            return userModel.findOne(data)
+            return userModel.findOne(data) 
         } catch (error) {
             res.status(500).send({error, data:[]})
         }
@@ -63,7 +63,7 @@ class UserController {
     
             const infoToCart = await cm.add(createdUser._id);
     
-            return infoToCart;
+            return createdUser
         } catch (err) {
             console.error('Error al agregar usuario:', err);
             throw new Error('No se pudo crear el usuario.');

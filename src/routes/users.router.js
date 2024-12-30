@@ -21,10 +21,10 @@ const auth = (req, res, next) => {
 
 
 
-router.get('/:uid?', async (req, res) => {
-    const users = await um.get(req.params.uid)
-    res.status(200).json({error : null, data: users})
-})
+// router.get('/:uid?', async (req, res) => {
+//     const users = await um.get(req.params.uid)
+//     res.status(200).json({error : null, data: 'jo'})
+// })
 
 
 router.post('/', async (req, res) => { // gestión de archivo único = req.file
