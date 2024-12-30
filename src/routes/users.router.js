@@ -19,6 +19,17 @@ const auth = (req, res, next) => {
     }
 }
 
+const existUser = async (req, res, next)=>{
+    const {email} = req.body
+    const dexist = await um.getOne({email})
+
+    if(dexist){
+       return res.status(401).send({error:'El email se encuentra registrado', data :[]})
+    }else {
+        next()
+    }
+}
+
 
 
 // router.get('/:uid?', async (req, res) => {
@@ -27,16 +38,30 @@ const auth = (req, res, next) => {
 // })
 
 
-router.post('/', async (req, res) => { // gestión de archivo único = req.file
-    const { first_name, last_name, email, password } = req.body;
+router.post('/', existUser, async (req, res) => {
+    try {
+        const { first_name, last_name, email, password } = req.body;
 
-    if (first_name != '' && last_name != '' && email != '' && password !='') {
+        // Validación de campos
+        if (!first_name || !last_name || !email || !password) {
+            return res.status(400).send({ error: 'Faltan campos obligatorios', data: [] });
+        }
+
         const newUser = { first_name, last_name, email, password };
-        const process = await um.add(newUser);
-        
-        res.status(200).send({ error: null, data: process, file: req.file });
-    } else {
-        res.status(400).send({ error: 'Faltan campos obligatorios', data: [] });
+
+        // Intentar agregar el usuario
+        const createdUser = await um.add(newUser);
+        res.status(201).send({ error: null, data: createdUser });
+    } catch (error) {
+        console.error('Error en la creación de usuario:', error.message);
+
+        // Verificar el tipo de error
+        if (error.message === 'El correo ya está registrado. Use otro.') {
+            return res.status(400).send({ error: error.message, data: [] });
+        }
+
+        // Error genérico
+        res.status(500).send({ error: 'Error interno del servidor', data: [] });
     }
 });
 

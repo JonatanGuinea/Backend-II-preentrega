@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert("Error al registrar el usuario.");
             }
         } catch (error) {
-            console.error("Error en la solicitud:", error);
             alert("Hubo un problema al registrar el usuario.");
         }
 

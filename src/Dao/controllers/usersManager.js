@@ -63,10 +63,15 @@ class UserController {
     
             const infoToCart = await cm.add(createdUser._id);
     
-            return createdUser
+            return createdUser;
         } catch (err) {
             console.error('Error al agregar usuario:', err);
-            throw new Error('No se pudo crear el usuario.');
+    
+            if (err.code === 11000) {
+                throw new Error('El correo ya está registrado. Use otro.'); // Error específico
+            }
+    
+            throw new Error('No se pudo crear el usuario.'); // Error genérico
         }
     };
     
