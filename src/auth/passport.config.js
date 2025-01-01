@@ -3,16 +3,16 @@ import local from 'passport-local';
 import GitHubStrategy from 'passport-github2';
 import jwt from 'passport-jwt';
 
-import userManager from "../Dao/controllers/usersManager.js";
+import userManager from '../dao/users.manager.js';
 
-import {config} from '../utils.js';
+import config from '../config.js';
 
 const manager = new userManager();
 const localStrategy = local.Strategy;
 
 const initAuthStrategies = () => {
     passport.use('login', new localStrategy(
-        {passReqToCallback: true, usernameField: 'email'},
+        {passReqToCallback: true, usernameField: 'username'},
         async (req, username, password, done) => {
             try {
                 if (username != '' && password != '') {
@@ -42,9 +42,9 @@ const initAuthStrategies = () => {
             clientSecret: config.GITHUB_CLIENT_SECRET,
             callbackURL: config.GITHUB_CALLBACK_URL
         },
-        async (req, accessToken, refreshToken, profile, done) => {
+        async (accessToken, refreshToken, profile, done) => {
             try {
-                
+                console.log(profile)
                 const email = profile._json?.email || null;
                 
                 // Necesitamos que en el profile haya un email
@@ -70,6 +70,8 @@ const initAuthStrategies = () => {
                     } else {
                         return done(null, foundUser);
                     }
+                }else if (email ===null ){
+                    return done(new Error('Email is null'), null);
                 } else {
                     return done(new Error('Faltan datos de perfil'), null);
                 }

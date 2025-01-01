@@ -1,46 +1,28 @@
 import mongoose from 'mongoose';
-import {config} from '../../utils.js';
 
+// Esta línea nos evitará problemas de nombres si Mongoose crea alguna colección no existente
 mongoose.pluralize(null);
 
-const collection = config.USERS_COLLECTION;
+const collection = 'users';
+
 
 const schema = new mongoose.Schema({
-    first_name: {
-        type: String,
-        required: true
-    },
-    last_name: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true, 
-        lowercase: true, 
-        trim: true 
-    },
-    age: {
-        type: Number,
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    cart: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Cart', 
-    },
-    role: {
-        type: String,
-        default: 'user'
-    }
+    first_name: { type: String, required: true },
+    last_name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    age: { type: Number, required: false },
+    /**
+     * Agregamos la propiedad role, que nos permitirá diferenciar distintos tipos de usuario.
+     * enum nos posibilita listar las opciones válidas para la propiedad, en este ejemplo,
+     * role puede ser ADMIN, PREMIUM o USER; si al cargar un nuevo usuario
+     * no se indica (o se coloca cualquier otro valor que no sea uno de los 3 de arriba),
+     * se cargará como USER (default).
+     */
+    role: { type: String, enum: ['ADMIN', 'PREMIUM', 'USER'], default: 'USER' },
+    password: { type: String, required: true }
 });
 
 const model = mongoose.model(collection, schema);
-// Aplica el plugin de paginación antes de crear el modelo
-
 
 
 export default model;
