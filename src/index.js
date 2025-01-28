@@ -6,6 +6,7 @@ import session from "express-session";
 import flash from "connect-flash";
 import MongoStore from "connect-mongo";
 import passport from "passport";
+import cors from 'cors'
 
 import routerP from "./routes/products.router.js";
 import routerC from "./routes/carts.router.js";
@@ -41,6 +42,8 @@ const httpServer = app.listen(config.PORT, async () => {
             mongoOptions: {}
         })
     }));
+
+    app.use(cors({origin:'*'}))
 
     // Inicializar Passport y estrategias
     initAuthStrategies();

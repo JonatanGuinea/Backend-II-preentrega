@@ -41,7 +41,7 @@ class UserController {
     authenticate = async (email, password) => {
         try {
             const filter = { email };
-            const findUser = await userModel.findOne(filter);
+            const findUser = await userModel.findOne(filter).lean();
     
             if (!findUser) {
                 return 'Usuario no encontrado';

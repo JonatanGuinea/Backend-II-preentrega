@@ -39,53 +39,61 @@ const initAuthStrategies = () => {
     passport.use('ghlogin', new GitHubStrategy(
         {
             clientID: config.GITHUB_CLIENT_ID,
-            clientSecret: config.GITHUB_CLIENT_SECRET,
-            callbackURL: config.GITHUB_CALLBACK_URL
+            clientSecret: config.GITHUB_SECRET,
+            callbackURL: config.GITHUB_CALLBACK_URL,
+            scope: ['user:email']
         },
-        async (req, accessToken, refreshToken, profile, done) => {
+        async (accessToken, refreshToken, profile, done) => {
             try {
-                
-                const email = profile._json?.email || null;
-                
-                // Necesitamos que en el profile haya un email
-                // Más adelante agregaremos un control alternativo en caso
-                // que el profile llegado desde Github no contenga ningún email usable
-                if (email) {
-                    // Tratamos de ubicar en NUESTRA base de datos un usuario
-                    // con ese email, si no está lo creamos y lo devolvemos,
-                    // si ya existe retornamos directamente esos datos
-                    const foundUser = await manager.getOne({ email: email });
-
-                    if (!foundUser) {
-                        const user = {
-                            first_name: profile._json.name.split(' ')[0],
-                            last_name: profile._json.name.split(' ')[1],
-                            email: email,
-                            password: 'none'
-                        }
-
-                        const process = await manager.add(user);
-
-                        return done(null, process);
-                    } else {
-                        return done(null, foundUser);
-                    }
-                } else {
-                    return done(new Error('Faltan datos de perfil'), null);
+                console.log("AccessToken:", accessToken); // Registro para verificar el token
+                console.log("Profile:", profile); // Registro para depurar el perfil
+    
+                const email = profile.emails?.[0]?.value || profile._json.email;
+    
+                if (!email) {
+                    return done(new Error('El perfil de GitHub no contiene un correo electrónico'), null);
                 }
-            } catch (err) {
-                return done(err.message, false);
+    
+                let user = await manager.getOne({ email });
+    
+                if (!user) {
+                    user = {
+                        first_name: profile._json.name?.split(' ')[0] || 'Usuario',
+                        last_name: profile._json.name?.split(' ')[1] || '',
+                        email,
+                        password: 'none' // No almacenar contraseñas inseguras
+                    };
+    
+                    user = await manager.add(user);
+                }
+    
+                return done(null, user);
+            } catch (error) {
+                console.error("Error en GitHubStrategy:", error); // Registro de errores
+                return done(error);
             }
         }
     ));
-
+    
     passport.serializeUser((user, done) => {
-        done(null, user);
-    });
+        passport.serializeUser((user, done) => {
+            if (!user._id) {
+                return done(new Error('El usuario no tiene un campo ID'));
+            }
+            done(null, user._id);
+        });
         
-    passport.deserializeUser((user, done) => {
-        done(null, user);
     });
+    
+    passport.deserializeUser(async (id, done) => {
+        try {
+            const user = await manager.getOne({ _id: id });
+            done(null, user);
+        } catch (error) {
+            done(error, null);
+        }
+    });
+    
 };
 
 export default initAuthStrategies;

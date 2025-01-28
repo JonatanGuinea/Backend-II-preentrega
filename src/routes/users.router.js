@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import passport from 'passport';
+import initAuthStrategies from '../auth/passport.config.js'
 
 import UserController from "../Dao/controllers/usersManager.js"
+import { createToken } from '../utils.js';
 
 
 
@@ -9,6 +11,7 @@ import UserController from "../Dao/controllers/usersManager.js"
 const router = Router();
 
 const um = new UserController();
+initAuthStrategies()
 
 const auth = (req, res, next) => {
     if(req.session?.passport) {
@@ -117,27 +120,53 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.post('/pplogin', passport.authenticate('login',{}), async (req, res)=>{
-
+router.post('/pplogin', passport.authenticate('login', { failureRedirect: '/login', failureFlash: true }), async (req, res) => {
     req.session.userData = req.user;
-    req.session.save(err=>{
-        if(err) return res.status(500).send({error:'error al almacenar sesión', data:[]})
-
-        res.redirect('/')
-        })
-                
-}
-)
-
-router.get('/ghlogin', passport.authenticate('ghlogin', { scope: ['user:email'] }), async (req, res) => {});
-router.get('/githubcallback', passport.authenticate('ghlogin', { failureRedirect: '/views/login' }), async (req, res) => {
     req.session.save(err => {
-        if (err) return res.status(500).send({ error: 'Error al almacenar datos de sesión', data: [] });
-
-        // res.status(200).send({ error: null, data: 'Usuario autenticado, sesión iniciada!' });
-        res.redirect('/views/profile');
+        if (err) {
+            return res.status(500).send({ error: 'Error al almacenar la sesión', data: [] });
+        }
+        res.redirect('/');
     });
 });
+
+
+
+router.get('/ghlogin', passport.authenticate('ghlogin', { scope: ['user:email'] }), async (req, res) => {});
+
+
+router.get('/ghcallback', passport.authenticate('ghlogin', { failureRedirect: '/' }), async (req, res) => {
+    try {
+        console.log("Usuario autenticado con GitHub:", req.user);
+        req.session.userData = req.user;
+        res.redirect('/');
+    } catch (err) {
+        console.error("Error en GitHub Callback:", err);
+        res.status(500).send({ error: "Error al procesar el inicio de sesión con GitHub", data: [] });
+    }
+});
+
+
+
+
+router.post('jwtlogin', async(req, res)=>{
+    const {email, password}=req.body;
+
+    if(email!='' && password !=''){
+        const process = await um.authenticate(email, password);
+
+        if(process){
+            const payload= {email, admin:true};
+            const token = createToken(payload, '1h')
+
+            res.status(200).send({error: null, data:{autentication: 'ok', token: token}})
+        }else {
+            res.status(401).send({error:'Usuario o clave no válidos JWT', data:[]})
+        }
+    }else{
+        res.status(400).send({error:'Faltan campos obligatorios , email y password', data:[]})
+    }
+})
 
 router.post('/logout', (req, res) => {
     req.session.destroy(err => {
@@ -148,6 +177,7 @@ router.post('/logout', (req, res) => {
         res.status(200).send({ error: null, data: "Sesión cerrada" });
     });
 });
+
 
 
 

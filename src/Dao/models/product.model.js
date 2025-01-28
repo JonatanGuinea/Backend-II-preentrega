@@ -1,8 +1,14 @@
 import mongoose from 'mongoose';
+import { config } from '../../utils.js';
+
 import mongoosePaginate from 'mongoose-paginate-v2';
+
+
 mongoose.pluralize(null);
 
-const collection = 'products';
+
+
+const collection = config.PRODUCTS_COLLECTION;
 
 const schema = new mongoose.Schema({
   title: {
