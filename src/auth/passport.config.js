@@ -3,16 +3,16 @@ import local from 'passport-local';
 import GitHubStrategy from 'passport-github2';
 import jwt from 'passport-jwt';
 
-import userManager from "../Dao/controllers/usersManager.js";
+import userManager from '../dao/users.manager.js';
 
-import {config} from '../utils.js';
+import config from '../config.js';
 
 const manager = new userManager();
 const localStrategy = local.Strategy;
 
 const initAuthStrategies = () => {
     passport.use('login', new localStrategy(
-        {passReqToCallback: true, usernameField: 'email'},
+        {passReqToCallback: true, usernameField: 'username'},
         async (req, username, password, done) => {
             try {
                 if (username != '' && password != '') {
@@ -45,6 +45,7 @@ const initAuthStrategies = () => {
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
+<<<<<<< HEAD
                 console.log("AccessToken:", accessToken); // Registro para verificar el token
                 console.log("Profile:", profile); // Registro para depurar el perfil
     
@@ -52,6 +53,38 @@ const initAuthStrategies = () => {
     
                 if (!email) {
                     return done(new Error('El perfil de GitHub no contiene un correo electrónico'), null);
+=======
+                console.log(profile)
+                const email = profile._json?.email || null;
+                
+                // Necesitamos que en el profile haya un email
+                // Más adelante agregaremos un control alternativo en caso
+                // que el profile llegado desde Github no contenga ningún email usable
+                if (email) {
+                    // Tratamos de ubicar en NUESTRA base de datos un usuario
+                    // con ese email, si no está lo creamos y lo devolvemos,
+                    // si ya existe retornamos directamente esos datos
+                    const foundUser = await manager.getOne({ email: email });
+
+                    if (!foundUser) {
+                        const user = {
+                            first_name: profile._json.name.split(' ')[0],
+                            last_name: profile._json.name.split(' ')[1],
+                            email: email,
+                            password: 'none'
+                        }
+
+                        const process = await manager.add(user);
+
+                        return done(null, process);
+                    } else {
+                        return done(null, foundUser);
+                    }
+                }else if (email ===null ){
+                    return done(new Error('Email is null'), null);
+                } else {
+                    return done(new Error('Faltan datos de perfil'), null);
+>>>>>>> 0c0a70991c584da988a81dcf0fae33e934e6a585
                 }
     
                 let user = await manager.getOne({ email });
